@@ -78,7 +78,7 @@ class PsGrapher:
         for command in self.ps_data.keys():
             dates = sorted([date for date in self.ps_data[
                            command].keys() if not date == "trace"])
-    	if not self.ps_data[command]["trace"]:
+            if not self.ps_data[command]["trace"]:
                 self.ps_data[command]["trace"] = go.Scatter(
                     x=dates,
                     y=[self.ps_data[command][date] for date in dates],
@@ -89,8 +89,9 @@ class PsGrapher:
                 )
             else:
                 self.ps_data[command]["trace"].x = dates
-                self.ps_data[command]["trace"].y = [self.ps_data[command][date] for date in dates]
-    	self.graph_data[command] = self.ps_data[command]["trace"]
+                self.ps_data[command]["trace"].y = [
+                    self.ps_data[command][date] for date in dates]
+            self.graph_data[command] = self.ps_data[command]["trace"]
 
     def update_plotly_graph(self, extend_existing_plot=False):
         fig = go.Figure(
