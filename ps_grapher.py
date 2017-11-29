@@ -10,10 +10,20 @@ import os
 
 class PsGrapher:
 
-    def __init__(self):
+    def __init__(self, iterations=None, time_interval=60):
         self.ps_data = {}
         self.graph_data = {}
-        self.time_interval = 60  # seconds
+        self.time_interval = time_interval  # seconds
+        self.iterations = iterations
+        self.output_filename = "MemoryUsage.html"
+
+    def _get_iterations(self, count):
+        if self.iterations is None:
+            return True
+        elif count <= self.iterations:
+            return True
+        else:
+            return False
 
     def get_ps_output(self):
         output = [item.lstrip().rstrip() for item in check_output(
@@ -57,7 +67,8 @@ class PsGrapher:
         )
 
     def run(self):
-        while True:
+        i = 0
+        while self._get_iterations(i):
             date = datetime.datetime.now()
             for row in self.get_ps_output():
                 pid, cpu_percentage, mem_percentage, resident_set_size, process = row
@@ -73,6 +84,7 @@ class PsGrapher:
             self.update_graph_data()
             self.update_plotly_graph()
             time.sleep(self.time_interval)
+            i += 1
 
     def update_graph_data(self):
         for command in self.ps_data.keys():
@@ -98,7 +110,7 @@ class PsGrapher:
             data=self.graph_data.values(),
             layout=self._create_layout("Memory Usage (kb)")
         )
-        plot(fig, filename="MemoryUsage.html", auto_open=False)
+        plot(fig, filename=self.output_filename, auto_open=False)
 
 
 if __name__ == "__main__":
