@@ -1,0 +1,29 @@
+  PID %CPU %MEM   RSS COMMAND
+ 5832  0.3 15.4 316144 python /vagrant/refinery/manage.py runserver 0.0.0.0:8000 --noreload
+ 1246  1.8  8.8 181116 /usr/bin/java -cp /var/lib/neo4j/lib/commons-lang3-3.3.2.jar:/var/lib/neo4j/lib/concurrentlinkedhashmap-lru-1.4.2.jar:/var/lib/neo4j/lib/jline-2.12.jar:/var/lib/neo4j/lib/lucene-cor
+ 2382  4.8  6.9 143116 java -server -Xss256k -Xms32m -Xmx32m -XX:NewRatio=3 -XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -XX:MaxTenuringThreshold=8 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:ConcGCThr
+ 1257  0.0  5.9 122192 postgres: checkpointer process
+ 5355  0.1  5.5 114244 python /vagrant/refinery/manage.py celeryd -c 1 -Q file_import --events
+ 3350  0.2  4.0 82088 /usr/lib/erlang/erts-5.10.4/bin/beam -W w -A 64 -P 1048576 -t 5000000 -stbt db -zdbbl 32000 -K true -B i -- -root /usr/lib/erlang -progname erl -- -home /var/lib/rabbitmq -- -pa /usr
+18410  0.0  3.4 70904 python /vagrant/refinery/manage.py celeryd -c 4 -Q celery --events
+18388  0.0  3.4 70900 python /vagrant/refinery/manage.py celeryd -c 4 -Q celery --events
+18379  0.0  3.4 70892 python /vagrant/refinery/manage.py celeryd -c 4 -Q celery --events
+12172  0.1  3.4 70840 python /vagrant/refinery/manage.py celerycam
+23086  0.0  3.4 70656 python /vagrant/refinery/manage.py celeryd -c 4 -Q celery --events
+ 5324  0.0  3.3 68136 python /vagrant/refinery/manage.py celeryd -c 4 -Q celery --events
+ 5333  0.0  3.2 66992 python /vagrant/refinery/manage.py celeryd -c 1 -Q file_import --events
+ 5337  0.0  3.2 65956 python /vagrant/refinery/manage.py celerybeat
+ 5725  0.0  1.6 34148 ruby /usr/bin/chef-client -d -P /var/run/chef/client.pid -c /etc/chef/client.rb -i 1800 -s 20 -L /var/log/chef/client.log
+ 3533  0.0  1.6 33924 /usr/bin/ruby /usr/bin/puppet agent
+  942  0.1  1.3 28104 /usr/bin/dockerd -H unix:///var/run/docker.sock --ip-forward=true --iptables=true --ip-masq=true --raw-logs
+ 7162  0.0  0.8 16868 /home/vagrant/.virtualenvs/refinery-platform/bin/python /home/vagrant/.virtualenvs/refinery-platform/bin/supervisord
+  987  0.0  0.6 13808 rsyslogd
+12231  0.0  0.6 13096 postgres: vagrant refinery [local] idle
+ 1254  0.0  0.6 12732 /usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf
+12824  0.0  0.5 10932 Xvfb -br -nolisten tcp -screen 0 1366x768x24 :1031
+13768  0.0  0.5 10904 Xvfb -br -nolisten tcp -screen 0 1366x768x24 :1011
+ 1000  0.0  0.4  9992 docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --shim d
+ 1395  0.0  0.4  9596 /usr/bin/memcached -m 64 -p 11211 -u memcache -l 127.0.0.1
+14920  0.0  0.4  9416 /usr/bin/python /usr/local/bin/memmon -p memmon=3GB
+19518  0.0  0.3  6356 -bash
+26472  0.0  0.3  6156 /usr/bin/atop -a -w /var/log/atop/atop_20171129 600
