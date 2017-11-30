@@ -1,5 +1,6 @@
 # ps_grapher
 [![Build Status](https://travis-ci.org/scottx611x/ps_grapher.svg?branch=master)](https://travis-ci.org/scottx611x/ps_grapher)
+[![codecov](https://codecov.io/gh/scottx611x/ps_grapher/branch/master/graph/badge.svg)](https://codecov.io/gh/scottx611x/ps_grapher)
 
 Graph ps output over time w/ Plotly
 
