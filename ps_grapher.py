@@ -10,67 +10,76 @@ import os
 
 class PsGrapher:
 
-    def __init__(self, iterations=None, time_interval=60):
+    def __init__(self,
+                 iterations=None,
+                 time_interval=60,
+                 output_filename="PsGrapher",
+                 n_top_processes=10):
         self.ps_data = {}
         self.graph_data = {}
-        self.time_interval = time_interval  # seconds
+        self.time_interval = time_interval
         self.iterations = iterations
-        self.output_filename = "MemoryUsage.html"
+        self.n_top_processes = n_top_processes
+        self.output_filename = "{}.html".format(output_filename)
+
+    def _format_ps_output(self):
+        process_info_list = [process_info.split() for process_info in self.get_ps_output()[
+            :self.n_top_processes] if process_info]
+        return [
+            [process_info[0], process_info[1], process_info[2],
+                process_info[3], " ".join(process_info[4:])]
+            for process_info in process_info_list
+        ]
 
     def _get_iterations(self, count):
         if self.iterations is None:
             return True
         elif count <= self.iterations:
             return True
-        else:
-            return False
+        return False
 
     def get_ps_output(self):
-        output = [item.lstrip().rstrip() for item in check_output(
-            "ps -e -o pid,%cpu,%mem,rss,command --sort -rss".split(" ")).split("\n")]
-        output.pop(0)
-        new = [a.split() for a in output[:10] if a]
-        newer = [[x[0], x[1], x[2], x[3], " ".join(x[4:])] for x in new]
-        return newer
+        ps_command = "ps -e -o pid,%cpu,%mem,rss,command --sort -rss"
+        return [item.lstrip().rstrip()
+                for item in check_output(ps_command.split(" ")).split("\n")]
 
     def _create_layout(self, title):
-        return dict(
-            title=title,
-            xaxis=dict(
-                rangeselector=dict(
-                    buttons=list([
-                        dict(
-                            count=1,
-                            label='1 min',
-                            step='minute',
-                            stepmode='backward'
-                        ),
-                        dict(
-                            count=1,
-                            label='1 hour',
-                            step='hour',
-                            stepmode='backward'
-                        ),
-                        dict(
-                            count=1,
-                            label='1 day',
-                            step='day',
-                            stepmode='backward'
-                        ),
-                        dict(step='all')
-                    ])
-                ),
-                rangeslider=dict(),
-                type='date',
-                tickformat='%H:%M:%S'
-            )
-        )
+        return {
+            "title": title,
+            "xaxis": {
+                "rangeselector": {
+                    "buttons": [
+                        {
+                            "count": 1,
+                            "label": '1 min',
+                            "step": 'minute',
+                            "stepmode": 'backward'
+                        },
+                        {
+                            "count": 1,
+                            "label": '1 hour',
+                            "step": 'hour',
+                            "stepmode": 'backward'
+                        },
+                        {
+                            "count": 1,
+                            "label": '1 day',
+                            "step": 'day',
+                            "stepmode": 'backward'
+                        },
+                        {"step": 'all'}
+                    ]
+                },
+                "rangeslider": {},
+                "type": "date",
+                "tickformat": "%H:%M:%S"
+            }
+        }
 
-    def run(self):
-        i = 0
-        while self._get_iterations(i):
+    def run(self, count=0):
+        while self._get_iterations(count):
             date = datetime.datetime.now()
-            for row in self.get_ps_output():
+            for row in self._format_ps_output():
                 pid, cpu_percentage, mem_percentage, resident_set_size, process = row
                 command_id = pid + " " + process
 
@@ -84,16 +93,17 @@ class PsGrapher:
             self.update_graph_data()
             self.update_plotly_graph()
             time.sleep(self.time_interval)
-            i += 1
+            count += 1
 
     def update_graph_data(self):
         for command in self.ps_data.keys():
             dates = sorted([date for date in self.ps_data[
                            command].keys() if not date == "trace"])
+            memory_usage = [self.ps_data[command][date] for date in dates]
             if not self.ps_data[command]["trace"]:
                 self.ps_data[command]["trace"] = go.Scatter(
                     x=dates,
-                    y=[self.ps_data[command][date] for date in dates],
+                    y=memory_usage,
                     name=command[0:100],
                     opacity=0.8,
                     connectgaps=True,
@@ -101,8 +111,7 @@ class PsGrapher:
                 )
             else:
                 self.ps_data[command]["trace"].x = dates
-                self.ps_data[command]["trace"].y = [
-                    self.ps_data[command][date] for date in dates]
+                self.ps_data[command]["trace"].y = memory_usage
             self.graph_data[command] = self.ps_data[command]["trace"]
 
     def update_plotly_graph(self, extend_existing_plot=False):
