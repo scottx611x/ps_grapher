@@ -17,7 +17,7 @@ Graph [`ps`](https://en.wikipedia.org/wiki/Ps_(Unix)) output over time w/ [Plotl
 
 ### Running PsGrapher:
 - `pyhton ps_grapher.py`
-- Running this will, by default, create an html file in the current working directory called: `PsGrapher.html`, and update the embedded `plotly` graph every minute.
+- Running this will, by default, create an html file in the current working directory called: `PsGrapher.html`, and update the embedded `plotly` graph every minute with info from the top 10 memory hogging processes.
 
 ### Why?:
 - I was motivated to make this after having trouble debugging a finnicky memory leak that wasn't easy to catch through normal logging practices.
