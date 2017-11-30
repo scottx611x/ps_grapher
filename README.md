@@ -5,8 +5,8 @@
 Graph [`ps`](https://en.wikipedia.org/wiki/Ps_(Unix)) output over time w/ [Plotly](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwi_wO6gmOXXAhVC7yYKHcMiAHIQFggpMAA&url=https%3A%2F%2Fplot.ly%2F&usg=AOvVaw13Djn0jQ81pcw8YNx89IT5)
 
 ### Pre-Reqs:
-- python
-- pip
+- `python`
+- `pip`
 
 ### Installation:
 - `git clone https://github.com/scottx611x/ps_grapher.git`
@@ -15,4 +15,12 @@ Graph [`ps`](https://en.wikipedia.org/wiki/Ps_(Unix)) output over time w/ [Plotl
 ### Running Tests:
 - `python tests.py`
 
+### Running PsGrapher:
+- `pyhton ps_grapher.py`
+- Running this will, by default, create an html file in the current working directory called: `PsGrapher.html`, and update the embedded `plotly` graph every minute.
+
+### Why?:
+- I was motivated to make this after having trouble debugging a finnicky memory leak that wasn't easy to catch through normal logging practices.
+
+### Sample Output:
 ![screen shot 2017-11-29 at 4 10 01 pm](https://user-images.githubusercontent.com/5629547/33399235-d7be9dc0-d51f-11e7-8b19-f5d4c59e0dad.png)
