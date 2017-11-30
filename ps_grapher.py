@@ -24,8 +24,11 @@ class PsGrapher:
         self.graph_title = "Memory Usage (kb)"
 
     def _format_ps_output(self):
-        process_info_list = [process_info.split() for process_info in self._get_ps_output()[
-            1:self.n_top_processes + 1] if process_info]
+        process_info_list = [
+            process_info.split() for process_info in self._get_ps_output()[
+                1:self.n_top_processes + 1
+            ] if process_info
+        ]
         return [
             [process_info[0], process_info[1], process_info[2],
                 process_info[3], " ".join(process_info[4:])]
@@ -42,9 +45,7 @@ class PsGrapher:
         return self.ps_data
 
     def _get_iterations(self, count):
-        if self.iterations is None:
-            return True
-        elif count <= self.iterations:
+        if self.iterations is None or count <= self.iterations:
             return True
         return False
 
@@ -54,29 +55,21 @@ class PsGrapher:
                 for item in check_output(ps_command.split(" ")).split("\n")]
 
     def _create_layout(self):
+        def make_button(time_unit):
+            return {
+                "count": 1,
+                "label": '1 ' + time_unit,
+                "step": time_unit,
+                "stepmode": 'backward'
+            }
         return {
             "title": self.graph_title,
             "xaxis": {
                 "rangeselector": {
                     "buttons": [
-                        {
-                            "count": 1,
-                            "label": '1 min',
-                            "step": 'minute',
-                            "stepmode": 'backward'
-                        },
-                        {
-                            "count": 1,
-                            "label": '1 hour',
-                            "step": 'hour',
-                            "stepmode": 'backward'
-                        },
-                        {
-                            "count": 1,
-                            "label": '1 day',
-                            "step": 'day',
-                            "stepmode": 'backward'
-                        },
+                        make_button("minute"),
+                        make_button("hour"),
+                        make_button("day"),
                         {"step": 'all'}
                     ]
                 },
