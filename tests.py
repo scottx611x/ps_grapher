@@ -2,6 +2,7 @@ import __builtin__
 import datetime
 import mock
 import os
+import subprocess
 import unittest
 
 import ps_grapher
@@ -37,10 +38,11 @@ class PsGrapherTests(unittest.TestCase):
         )
 
     def tearDown(self):
-        try:
-            os.remove(self.output_file)
-        except OSError as e:
-            pass
+        for path in ["PsGrapher.html", self.output_file]:
+            try:
+                os.remove(path)
+            except OSError as e:
+                pass
 
     def test_run_works(self):
         self.ps_grapher.run()
@@ -84,7 +86,7 @@ class PsGrapherTests(unittest.TestCase):
     def test__create_layout(self):
         self.assertEqual(
             PsGrapher()._create_layout(),
-            {'xaxis': {'rangeselector': {'buttons': [{'count': 1, 'step': 'minute', 'stepmode': 'backward', 'label': '1 min'}, {'count': 1, 'step': 'hour', 'stepmode': 'backward', 'label': '1 hour'}, {
+            {'xaxis': {'rangeselector': {'buttons': [{'count': 1, 'step': 'minute', 'stepmode': 'backward', 'label': '1 minute'}, {'count': 1, 'step': 'hour', 'stepmode': 'backward', 'label': '1 hour'}, {
                 'count': 1, 'step': 'day', 'stepmode': 'backward', 'label': '1 day'}, {'step': 'all'}]}, 'tickformat': '%H:%M:%S', 'type': 'date', 'rangeslider': {}}, 'title': 'Memory Usage (kb)'}
         )
 
@@ -140,7 +142,13 @@ class PsGrapherTests(unittest.TestCase):
     def test__update_plotly_graph(self):
         self.ps_grapher._update_ps_data()
         self.ps_grapher._update_graph_data()
-        self.ps_grapher._update_plotly_graph()
+        with mock.patch("ps_grapher.plot") as plot_mock:
+            self.ps_grapher._update_plotly_graph()
+            self.assertTrue(plot_mock.called)
+
+    def test_multiple_iterations(self):
+        PsGrapher(iterations=5, time_interval=.01).run()
+
 
 if __name__ == "__main__":
     unittest.main()
