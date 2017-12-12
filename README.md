@@ -23,4 +23,5 @@ Graph [`ps`](https://en.wikipedia.org/wiki/Ps_(Unix)) output over time w/ [Plotl
 - I was motivated to make this after having trouble debugging a finnicky memory leak that wasn't easy to catch through normal logging practices.
 
 ### Sample Output:
-![screen shot 2017-11-29 at 4 10 01 pm](https://user-images.githubusercontent.com/5629547/33399235-d7be9dc0-d51f-11e7-8b19-f5d4c59e0dad.png)
+![screen shot 2017-12-12 at 5 00 20 pm](https://user-images.githubusercontent.com/5629547/33910824-0c5a41fe-df5e-11e7-8a2b-4f2d305015fc.png)
+
