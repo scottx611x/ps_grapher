@@ -45,9 +45,7 @@ class PsGrapher:
         return self.ps_data
 
     def _get_iterations(self, count):
-        if self.iterations is None or count <= self.iterations:
-            return True
-        return False
+        return self.iterations is None or count <= self.iterations
 
     def _get_ps_output(self):
         ps_command = "ps -e -o pid,%cpu,%mem,rss,command --sort -rss"
